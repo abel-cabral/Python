@@ -110,6 +110,7 @@ def Main():
               str(msg[0]) + ' Message ' + msg[1])
         sys.exit()
     s.listen(1)  # espera chegar pacotes na porta especificada
+    print('SERVIDOR ONLINE')
 
     while True:
         # Aceita conexões
