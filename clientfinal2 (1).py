@@ -11,12 +11,12 @@ def coleta(con):
         n = round(random.uniform(0.5, 10))
         b = str(n)
         print(b)
-        s.send(b.encode())
+        s.send(b.encode("utf-8"))
         time.sleep(1)##botei o sleep porque tava mandando os números de uma vez só (concatenada)
     while 1:
         data = s.recv(1024)
         if not data: break
-        print(data.decode())
+        print(data.decode("utf-8"))
     s.close()
 
 HOST = '127.0.0.2'    # The remote host
