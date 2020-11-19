@@ -12,9 +12,9 @@ fakeSensorData = FakeSensor()
 def getInfo(con):
     # message sent to server                
     fakeSensorData.sensorType = "Sensor de umidade"
-    fakeSensorData.time = 100
-    fakeSensorData.metric = random.randint(100, 1000)
-    fakeSensorData.id = "Pé de Tomate"      
+    fakeSensorData.time = 150
+    fakeSensorData.metric = random.randint(100, 1500)
+    fakeSensorData.id = "CEBOLA"      
     json_data = json.dumps(fakeSensorData.__dict__, sort_keys=False, indent=2)             
     con.send(json_data.encode("utf-8"))
     
@@ -25,7 +25,7 @@ def getInfo(con):
         print('Received from the server :', feedback.__dict__)            
     
     print ("Fechou a conexao")
-    time.sleep(10)
+    time.sleep(13)
     Main()
 
 def Main(): 
