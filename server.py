@@ -9,12 +9,12 @@ import threading
 import json
 
 print_lock = threading.Lock()
-
-# client and statistics
+        
 password = "CFT10"
 admin = ""
 connection = []
 connectionNumber = 0
+adminMessages = []
 
 
 def activerWater(sensor, index, time):
@@ -28,48 +28,56 @@ def activerWater(sensor, index, time):
     connection.pop(index)
 
 
-def engenier():
-    global admin
+def engenier():    
     for i in range(len(connection)):
         fakeSensorData = connection[i][1]  # Sensor data
         # http://mundoprojetado.com.br/medindo-a-umidade-do-solo/
         umidade = int(fakeSensorData.metric)
         # 300 - Valores abaixo de 300 indicam que o solo está seco
         # 700 - Valores acima de 700 indicam que o solo está com a umidade ideal
-
+                
         if(umidade <= 300):
-            # mensagem de alerta ao dono e molha
+            # Cria um alerta
+            msg = "A planta " + \
+                connection[i][1].id + \
+                " esta com umidade abaixo de 300, verifique a integridade do vaso ou a mangueira de irrigação"
+            adminMessages.append(msg)
+            
+            # Ativa a água
             activerWater(connection[i], i, 14)  # client connection
-            if (admin != ""):
-                message = "A planta X esta muito seca, abaixo de 300, verifique o vaso ou a mangueira de irrigação"
-                admin.send(message.encode("utf-8"))
         elif(umidade > 300 and umidade < 700):
             # apenas molha
             activerWater(connection[i], i, 7)  # client connection
         else:
-            # não é necessario molhar
-            json_data = json.dumps(fakeSensorData.__dict__, sort_keys=False, indent=2)             
+            # Não é necessario molhar
+            json_data = json.dumps(
+                fakeSensorData.__dict__, sort_keys=False, indent=2)
             connection[i][0].send(json_data.encode("utf-8"))
             connection.pop(i)
+            return
 
 
 def waitSensors(conn):
-    global admin
     while True:
         data = conn.recv(1024)  # Recebe os dados
         if not data:
             break
 
         # Check if is the admin
-        if(data.decode("utf-8") == password and admin == ""):
-            admin = conn
-            admin.send("Connected to server".encode("utf-8"))
+        if(data.decode("utf-8") == password):
+            if (len(adminMessages) != 0):
+                json_data = json.dumps(
+                    adminMessages, sort_keys=False, indent=2)
+                conn.send(json_data.encode("utf-8"))
+                adminMessages.clear()
+            else:
+                conn.send("Não há avisos".encode("utf-8"))
         else:
             try:
                 dataAndStatistic = []
                 data = json.loads(data.decode("utf-8"))
                 fakeSensorData = FakeSensor(
-                    data["sensorType"], data["metric"], data["time"], data["message"], data["status"], data["unity"])
+                    data["sensorType"], data["metric"], data["time"], data["message"], data["status"], data["id"])
 
                 dataAndStatistic.insert(0, conn)
                 dataAndStatistic.insert(1, fakeSensorData)
