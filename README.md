@@ -9,7 +9,7 @@ There are three types of files:
   - administrador: where just receive warnings about garden.
 
 ## Instructions
-### Download and install
+#### Download and install
 - Python >= 3.6
 
 ## Running
