@@ -12,10 +12,10 @@ There are three types of files:
 #### Download and install
 - Python >= 3.6
 
-#### Running
+## Running
 - run server ```python3 server.py```
 - run client vegetables for exemplo, ```python3 tomato.py```
 - run administrator ```python3 admin.py```
 
-Meta
+## Meta
 Abel C. Arruda – jcabral@id.uff.br
