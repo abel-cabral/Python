@@ -1,4 +1,4 @@
-## Vegetable Garden
+# Vegetable Garden
 I made this project to discipline of `Computer Network` during my graduate. We has a server
 that receive object data from clients, server decide what's the best option to do and response that
 with the instructions. My main idea here is, the senser in the client side send to server data about temperature,
@@ -8,8 +8,8 @@ There are three types of files:
   - vegetable: where sensor there is, sending status and waiting server response.
   - administrador: where just receive warnings about garden.
 
-### Instructions
-#### Download and install
+## Instructions
+### Download and install
 - Python >= 3.6
 
 ## Running
